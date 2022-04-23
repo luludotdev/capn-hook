@@ -8,6 +8,8 @@ export const WebhookEmbedSchema = z.object({
 
 export type Webhook = z.infer<typeof WebhookSchema>
 export const WebhookSchema = z.object({
+  $schema: z.string().nonempty(),
+
   id: z.string().nonempty(),
   embed: WebhookEmbedSchema,
 })
