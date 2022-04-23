@@ -1,25 +1,35 @@
 import 'source-map-support/register.js'
 
 import mkdirp from 'mkdirp'
-import { writeFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { argv } from 'node:process'
-import { jsonSchema } from './schema.js'
+import { exists } from './fs.js'
+import { ConfigSchema, jsonSchema } from './schema.js'
 
 const main = async () => {
+  const configDir = join('.', 'config')
+  await mkdirp(configDir)
+
   if (argv[2]?.toLowerCase() === 'schemagen') {
-    const dir = join('.', 'config')
-    await mkdirp(dir)
-
-    const path = join(dir, 'config.schema.json')
+    const schemaPath = join(configDir, 'config.schema.json')
     const schema = JSON.stringify(jsonSchema, null, 2) + '\n'
-    await writeFile(path, schema)
 
+    await writeFile(schemaPath, schema)
     return
   }
 
+  const configPath = join(configDir, 'config.json')
+  const configExists = await exists(configPath)
+  if (!configExists) {
+    throw new Error(`Config file "${configPath}" does not exist!`)
+  }
+
+  const data = await readFile(configPath, 'utf8')
+  const json = JSON.parse(data) as unknown
+  const config = await ConfigSchema.parseAsync(json)
+
   // TODO
-  void 0
 }
 
 main().catch(console.error)
