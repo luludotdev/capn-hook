@@ -3,9 +3,10 @@ import 'source-map-support/register.js'
 import mkdirp from 'mkdirp'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { argv } from 'node:process'
+import { argv, env } from 'node:process'
 import { exists } from './fs.js'
 import { ConfigSchema, jsonSchema } from './schema.js'
+import { createServer } from './server.js'
 
 const main = async () => {
   const configDir = join('.', 'config')
@@ -27,9 +28,11 @@ const main = async () => {
 
   const data = await readFile(configPath, 'utf8')
   const json = JSON.parse(data) as unknown
-  const config = await ConfigSchema.parseAsync(json)
 
-  // TODO
+  const config = await ConfigSchema.parseAsync(json)
+  const app = await createServer(config)
+
+  app.listen(env.PORT ?? 3000)
 }
 
 main().catch(console.error)
