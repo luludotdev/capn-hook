@@ -6,6 +6,10 @@
       "type": "string",
       "minLength": 1
     },
+    "hmacSecret": {
+      "type": "string",
+      "minLength": 1
+    },
     "hooks": {
       "type": "array",
       "items": {
@@ -13,7 +17,8 @@
         "properties": {
           "id": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "[a-z-]+"
           },
           "embed": {
             "type": "object",
@@ -21,17 +26,47 @@
               "title": {
                 "type": "string",
                 "minLength": 1
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "content": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "inline": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "content"
+                  ],
+                  "additionalProperties": false
+                }
               }
             },
             "required": [
               "title"
             ],
             "additionalProperties": false
+          },
+          "webhookURL": {
+            "type": "string",
+            "format": "uri"
           }
         },
         "required": [
           "id",
-          "embed"
+          "embed",
+          "webhookURL"
         ],
         "additionalProperties": false
       }
@@ -39,6 +74,7 @@
   },
   "required": [
     "$schema",
+    "hmacSecret",
     "hooks"
   ],
   "additionalProperties": false
