@@ -8,10 +8,14 @@ export const WebhookEmbedSchema = z.object({
 
 export type Webhook = z.infer<typeof WebhookSchema>
 export const WebhookSchema = z.object({
-  $schema: z.string().nonempty(),
-
   id: z.string().nonempty(),
   embed: WebhookEmbedSchema,
 })
 
-export const jsonSchema = zodToJsonSchema(WebhookSchema)
+export type Config = z.infer<typeof ConfigSchema>
+export const ConfigSchema = z.object({
+  $schema: z.string().nonempty(),
+  hooks: z.array(WebhookSchema),
+})
+
+export const jsonSchema = zodToJsonSchema(ConfigSchema)

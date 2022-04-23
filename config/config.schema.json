@@ -6,28 +6,40 @@
       "type": "string",
       "minLength": 1
     },
-    "id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "embed": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [
-        "title"
-      ],
-      "additionalProperties": false
+    "hooks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "embed": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "title"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "embed"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [
     "$schema",
-    "id",
-    "embed"
+    "hooks"
   ],
   "additionalProperties": false
 }
