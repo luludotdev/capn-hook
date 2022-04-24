@@ -1,27 +1,41 @@
-import { getProperty } from 'dot-prop'
+import { getProperty, hasProperty } from 'dot-prop'
 
 export const replace: <T extends Record<string, unknown>>(
   input: string,
   data: Readonly<T>
 ) => string = (input, data) =>
-  input.replace(/{{ (.+) }}/g, (_, path: string) => {
-    const prop: unknown = getProperty(data, path)
+  input.replace(
+    /{{ (\?)?(.+?)(?::"(.+)")? }}/g,
+    (
+      _,
+      lazyString: string | undefined,
+      path: string,
+      value: string | undefined
+    ) => {
+      const exists = hasProperty(data, path)
+      const lazy = lazyString === '?'
 
-    switch (typeof prop) {
-      case 'string':
-        return prop
+      if (!exists) {
+        if (lazy) return value ?? ''
+        throw new Error(`Path '${path}' does not exist on object!`)
+      }
 
-      case 'number':
-      case 'bigint':
-        return prop.toString()
+      if (value && !lazy) return value
 
-      case 'boolean':
-        return `${prop}`
-
-      default:
-        throw new TypeError('unsupported type')
+      const prop: unknown = getProperty(data, path)
+      switch (typeof prop) {
+        case 'string':
+          return prop
+        case 'number':
+        case 'bigint':
+          return prop.toString()
+        case 'boolean':
+          return `${prop}`
+        default:
+          throw new TypeError('unsupported type')
+      }
     }
-  })
+  )
 
 export const createReplace: <T extends Record<string, unknown>>(
   data: Readonly<T>
