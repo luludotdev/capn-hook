@@ -12,12 +12,26 @@ const EmbedFieldSchema = z.object({
     .describe(
       'If set to `true`, skips adding the field if the content resolves to an empty string'
     ),
+
+  stripHtml: z
+    .boolean()
+    .default(false)
+    .describe('Strip HTML tags from `content`'),
 })
 
 export type WebhookEmbed = z.infer<typeof WebhookEmbedSchema>
 export const WebhookEmbedSchema = z.object({
   title: z.string().nonempty(),
-  description: z.string().nonempty().optional(),
+  description: z
+    .object({
+      content: z.string().nonempty(),
+      stripHtml: z
+        .boolean()
+        .default(false)
+        .describe('Strip HTML tags from `content`'),
+    })
+    .optional(),
+
   url: z.string().url().optional(),
   image: z.string().url().optional(),
   thumbnail: z.string().url().optional(),

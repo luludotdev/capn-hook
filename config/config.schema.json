@@ -39,8 +39,22 @@
                 "minLength": 1
               },
               "description": {
-                "type": "string",
-                "minLength": 1
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "stripHtml": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Strip HTML tags from `content`"
+                  }
+                },
+                "required": [
+                  "content"
+                ],
+                "additionalProperties": false
               },
               "url": {
                 "type": "string",
@@ -123,6 +137,11 @@
                       "type": "boolean",
                       "default": false,
                       "description": "If set to `true`, skips adding the field if the content resolves to an empty string"
+                    },
+                    "stripHtml": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Strip HTML tags from `content`"
                     }
                   },
                   "required": [

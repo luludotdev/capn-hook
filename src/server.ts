@@ -39,10 +39,10 @@ export const createServer = async (config: Config) => {
 
       try {
         const username =
-          hook.sender?.username && replace(hook.sender.username, data)
+          hook.sender?.username && replace(data, hook.sender.username)
 
         const avatarURL =
-          hook.sender?.avatarURL && replace(hook.sender.avatarURL, data)
+          hook.sender?.avatarURL && replace(data, hook.sender.avatarURL)
 
         const embed = generateEmbed(hook, data)
         await webhook.send({ embeds: [embed], username, avatarURL })

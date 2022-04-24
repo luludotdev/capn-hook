@@ -11,7 +11,8 @@ export const generateEmbed: <T extends Record<string, unknown>>(
 
   embed.setTitle(replace(hook.embed.title))
   if (hook.embed.description) {
-    embed.setDescription(replace(hook.embed.description))
+    const stripHtml = hook.embed.description.stripHtml
+    embed.setDescription(replace(hook.embed.description.content, { stripHtml }))
   }
 
   if (hook.embed.url) embed.setURL(replace(hook.embed.url))
@@ -51,7 +52,7 @@ export const generateEmbed: <T extends Record<string, unknown>>(
 
   for (const field of hook.embed.fields ?? []) {
     const name = replace(field.name)
-    const content = replace(field.content)
+    const content = replace(field.content, { stripHtml: field.stripHtml })
 
     if (content === '' && field.optional) {
       continue

@@ -1203,6 +1203,7 @@ __metadata:
     nodemon: ^2.0.15
     rimraf: ^3.0.2
     source-map-support: ^0.5.21
+    striptags: ^3.2.0
     ts-node: ^10.7.0
     tslib: ^2.4.0
     typescript: ^4.6.3
@@ -5690,6 +5691,13 @@ __metadata:
   version: 2.0.1
   resolution: "strip-json-comments@npm:2.0.1"
   checksum: 1074ccb63270d32ca28edfb0a281c96b94dc679077828135141f27d52a5a398ef5e78bcf22809d23cadc2b81dfbe345eb5fd8699b385c8b1128907dec4a7d1e1
+  languageName: node
+  linkType: hard
+
+"striptags@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "striptags@npm:3.2.0"
+  checksum: 1b1f127ab46394665bd4f4dc3dc10f5f98c012cbdea93a68b10d78693671e98efc9ae7609f546af997ae0a02b81a5c9b7b916fa119482c31741406cdabaebf3b
   languageName: node
   linkType: hard
 
