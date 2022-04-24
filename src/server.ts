@@ -3,7 +3,7 @@ import { type HexColorString, MessageEmbed, WebhookClient } from 'discord.js'
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 import Koa from 'koa'
 import koaBody from 'koa-body'
-import { replace } from './replace.js'
+import { createReplace } from './replace.js'
 import { type Config } from './schema.js'
 
 export const createServer = async (config: Config) => {
@@ -28,18 +28,23 @@ export const createServer = async (config: Config) => {
         return
       }
 
-      const data = {
+      const data = Object.freeze({
         body,
-      }
+      })
 
-      const embed = new MessageEmbed().setTitle(replace(hook.embed.title, data))
+      const replace = createReplace(data)
+      const embed = new MessageEmbed().setTitle(replace(hook.embed.title))
+
       if (hook.embed.color) {
-        const color = replace(hook.embed.color, data)
+        const color = replace(hook.embed.color)
         embed.setColor(color as HexColorString)
       }
 
       try {
         await webhook.send({ embeds: [embed] })
+
+        ctx.status = 200
+        ctx.body = 'OK'
       } catch (error: unknown) {
         ctx.status = StatusCodes.INTERNAL_SERVER_ERROR
         ctx.body =
@@ -47,9 +52,6 @@ export const createServer = async (config: Config) => {
             ? error.stack ?? error.message
             : ReasonPhrases.INTERNAL_SERVER_ERROR
       }
-
-      ctx.status = 200
-      ctx.body = 'OK'
     })
   }
 
