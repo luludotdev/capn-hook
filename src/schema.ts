@@ -62,8 +62,6 @@ export const WebhookSchema = z.object({
 export type Config = z.infer<typeof ConfigSchema>
 export const ConfigSchema = z.object({
   $schema: z.string().nonempty().optional(),
-
-  hmacSecret: z.string().nonempty(),
   hooks: z.array(WebhookSchema),
 })
 

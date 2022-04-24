@@ -6,10 +6,6 @@
       "type": "string",
       "minLength": 1
     },
-    "hmacSecret": {
-      "type": "string",
-      "minLength": 1
-    },
     "hooks": {
       "type": "array",
       "items": {
@@ -150,7 +146,6 @@
     }
   },
   "required": [
-    "hmacSecret",
     "hooks"
   ],
   "additionalProperties": false
