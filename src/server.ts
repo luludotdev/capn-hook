@@ -30,6 +30,10 @@ export const createServer = async (config: Config) => {
 
       const data = Object.freeze({
         body,
+        ctx: {
+          id: hook.id,
+          now: new Date().toISOString(),
+        },
       })
 
       const replace = createReplace(data)
