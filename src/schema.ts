@@ -6,7 +6,12 @@ const EmbedFieldSchema = z.object({
   name: z.string().nonempty(),
   content: z.string().nonempty(),
   inline: z.boolean().default(false),
-  optional: z.boolean().default(false),
+  optional: z
+    .boolean()
+    .default(false)
+    .describe(
+      'If set to `true`, skips adding the field if the content resolves to an empty string'
+    ),
 })
 
 export type WebhookEmbed = z.infer<typeof WebhookEmbedSchema>
@@ -37,7 +42,8 @@ export const WebhookEmbedSchema = z.object({
     .string()
     .nonempty()
     .regex(/^#(?:[\da-fA-F]{3}){1,2}$/)
-    .optional(),
+    .optional()
+    .describe('Hex Format'),
 
   fields: z.array(EmbedFieldSchema).optional(),
 })
@@ -47,7 +53,8 @@ export const WebhookSchema = z.object({
   id: z
     .string()
     .nonempty()
-    .regex(/[a-z-]+/),
+    .regex(/[a-z-]+/)
+    .describe('Used as the webhook path'),
 
   sender: z
     .object({

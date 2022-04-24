@@ -14,7 +14,8 @@
           "id": {
             "type": "string",
             "minLength": 1,
-            "pattern": "[a-z-]+"
+            "pattern": "[a-z-]+",
+            "description": "Used as the webhook path"
           },
           "sender": {
             "type": "object",
@@ -98,7 +99,8 @@
               "color": {
                 "type": "string",
                 "minLength": 1,
-                "pattern": "^#(?:[\\da-fA-F]{3}){1,2}$"
+                "pattern": "^#(?:[\\da-fA-F]{3}){1,2}$",
+                "description": "Hex Format"
               },
               "fields": {
                 "type": "array",
@@ -119,7 +121,8 @@
                     },
                     "optional": {
                       "type": "boolean",
-                      "default": false
+                      "default": false,
+                      "description": "If set to `true`, skips adding the field if the content resolves to an empty string"
                     }
                   },
                   "required": [
