@@ -1,11 +1,15 @@
 import Router from '@koa/router'
+import { field } from '@lolpants/jogger'
 import { WebhookClient } from 'discord.js'
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 import Koa from 'koa'
 import koaBody from 'koa-body'
 import { generateEmbed } from './embed.js'
+import { ctxField, logger } from './logger.js'
 import { replace } from './replace.js'
 import { type Config } from './schema.js'
+
+const ctx = ctxField('server')
 
 export const createServer = async (config: Config) => {
   const app = new Koa()
@@ -57,6 +61,8 @@ export const createServer = async (config: Config) => {
             : ReasonPhrases.INTERNAL_SERVER_ERROR
       }
     })
+
+    logger.info(ctx, field('action', 'register'), field('id', hook.id))
   }
 
   app.use(router.routes()).use(router.allowedMethods())

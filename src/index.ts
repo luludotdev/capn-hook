@@ -37,7 +37,7 @@ const main = async () => {
   const app = await createServer(config)
   const port = env.PORT ? Number.parseInt(env.PORT, 10) : 3000
 
-  logger.info(ctx, field('port', port))
+  logger.info(ctx, field('action', 'init'), field('port', port))
   app.listen()
 }
 
