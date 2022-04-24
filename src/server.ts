@@ -4,6 +4,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 import Koa from 'koa'
 import koaBody from 'koa-body'
 import { generateEmbed } from './embed.js'
+import { replace } from './replace.js'
 import { type Config } from './schema.js'
 
 export const createServer = async (config: Config) => {
@@ -37,8 +38,14 @@ export const createServer = async (config: Config) => {
       })
 
       try {
+        const username =
+          hook.sender?.username && replace(hook.sender.username, data)
+
+        const avatarURL =
+          hook.sender?.avatarURL && replace(hook.sender.avatarURL, data)
+
         const embed = generateEmbed(hook, data)
-        await webhook.send({ embeds: [embed] })
+        await webhook.send({ embeds: [embed], username, avatarURL })
 
         ctx.status = 200
         ctx.body = 'OK'

@@ -48,6 +48,13 @@ export const WebhookSchema = z.object({
     .nonempty()
     .regex(/[a-z-]+/),
 
+  sender: z
+    .object({
+      username: z.string().nonempty().optional(),
+      avatarURL: z.string().url().optional(),
+    })
+    .optional(),
+
   embed: WebhookEmbedSchema,
   webhookURL: z.string().url(),
 })

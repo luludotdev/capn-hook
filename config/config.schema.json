@@ -20,6 +20,20 @@
             "minLength": 1,
             "pattern": "[a-z-]+"
           },
+          "sender": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string",
+                "minLength": 1
+              },
+              "avatarURL": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "additionalProperties": false
+          },
           "embed": {
             "type": "object",
             "properties": {
