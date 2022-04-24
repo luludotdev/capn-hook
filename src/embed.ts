@@ -1,4 +1,4 @@
-import { type HexColorString, MessageEmbed } from 'discord.js'
+import { type HexColorString, MessageEmbed, Util } from 'discord.js'
 import { createReplace } from './replace.js'
 import { type Webhook } from './schema.js'
 
@@ -53,7 +53,12 @@ export const generateEmbed: <T extends Record<string, unknown>>(
     const name = replace(field.name)
     const content = replace(field.content)
 
-    embed.addField(name, content, field.inline)
+    const [first, ...split] = Util.splitMessage(content, { maxLength: 1950 })
+    embed.addField(name, first, field.inline)
+
+    for (const cont of split) {
+      embed.addField(`${name} (cont.)`, cont, field.inline)
+    }
   }
 
   return embed
