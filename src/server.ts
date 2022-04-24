@@ -40,6 +40,13 @@ export const createServer = async (config: Config) => {
         embed.setColor(color as HexColorString)
       }
 
+      for (const field of hook.embed.fields ?? []) {
+        const name = replace(field.name)
+        const content = replace(field.content)
+
+        embed.addField(name, content, field.inline)
+      }
+
       try {
         await webhook.send({ embeds: [embed] })
 
