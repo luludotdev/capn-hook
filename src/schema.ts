@@ -11,6 +11,11 @@ const EmbedFieldSchema = z.object({
 export type WebhookEmbed = z.infer<typeof WebhookEmbedSchema>
 export const WebhookEmbedSchema = z.object({
   title: z.string().nonempty(),
+  color: z
+    .string()
+    .nonempty()
+    .regex(/^#(?:[\da-fA-F]{3}){1,2}$/)
+    .optional(),
   fields: z.array(EmbedFieldSchema).optional(),
 })
 

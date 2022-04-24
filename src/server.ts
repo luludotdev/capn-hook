@@ -1,5 +1,5 @@
 import Router from '@koa/router'
-import { MessageEmbed, WebhookClient } from 'discord.js'
+import { type HexColorString, MessageEmbed, WebhookClient } from 'discord.js'
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 import Koa from 'koa'
 import koaBody from 'koa-body'
@@ -33,6 +33,10 @@ export const createServer = async (config: Config) => {
       }
 
       const embed = new MessageEmbed().setTitle(replace(hook.embed.title, data))
+      if (hook.embed.color) {
+        const color = replace(hook.embed.color, data)
+        embed.setColor(color as HexColorString)
+      }
 
       try {
         await webhook.send({ embeds: [embed] })
