@@ -38,7 +38,7 @@ const main = async () => {
   const port = env.PORT ? Number.parseInt(env.PORT, 10) : 3000
 
   logger.info(ctx, field('action', 'init'), field('port', port))
-  app.listen()
+  app.listen(port)
 }
 
 main().catch(console.error)
