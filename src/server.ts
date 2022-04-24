@@ -5,11 +5,11 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 import Koa from 'koa'
 import koaBody from 'koa-body'
 import { generateEmbed } from './embed.js'
-import { ctxField, logger } from './logger.js'
+import { ctxField, errorField, logger } from './logger.js'
 import { replace } from './replace.js'
 import { type Config } from './schema.js'
 
-const ctx = ctxField('server')
+const context = ctxField('server')
 
 export const createServer = async (config: Config) => {
   const app = new Koa()
@@ -59,10 +59,14 @@ export const createServer = async (config: Config) => {
           error instanceof Error
             ? error.stack ?? error.message
             : ReasonPhrases.INTERNAL_SERVER_ERROR
+
+        if (error instanceof Error) {
+          logger.error(context, field('id', hook.id), errorField(error))
+        }
       }
     })
 
-    logger.info(ctx, field('action', 'register'), field('id', hook.id))
+    logger.info(context, field('action', 'register'), field('id', hook.id))
   }
 
   app.use(router.routes()).use(router.allowedMethods())
