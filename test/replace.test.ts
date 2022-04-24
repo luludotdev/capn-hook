@@ -2,6 +2,40 @@ import test from 'ava'
 import { replace } from '../src/replace.js'
 
 // #region
+test('replace(): parses strings', t => {
+  const data = { value: 'value' }
+  const resolved = replace('{{ value }}', data)
+
+  t.is(resolved, 'value')
+})
+
+test('replace(): parses numbers', t => {
+  const data = { value: 2 }
+  const resolved = replace('{{ value }}', data)
+
+  t.is(resolved, '2')
+})
+
+test('replace(): parses bigints', t => {
+  const data = { value: BigInt(Number.MAX_SAFE_INTEGER) + BigInt(10) }
+  const resolved = replace('{{ value }}', data)
+
+  t.is(resolved, '9007199254741001')
+})
+
+test('replace(): throws for arrays', t => {
+  const data = { value: [] }
+  t.throws(() => replace('{{ value }}', data))
+})
+
+test('replace(): throws for objects', t => {
+  const data = { value: {} }
+  t.throws(() => replace('{{ value }}', data))
+})
+// #endregion
+
+// #region
+// #region
 test('replace(): does not exist, is not lazy, no value -> throws', t => {
   t.throws(() => replace('{{ a.b }}', {}))
 })
@@ -53,4 +87,5 @@ test('replace(): does exist, is lazy, has value -> resolves to value of path', t
 
   t.is(resolved, '2')
 })
+// #endregion
 // #endregion
