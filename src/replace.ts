@@ -11,18 +11,23 @@ export const replace: <T extends Record<string, unknown>>(
   options?: Partial<ReplaceOptions>
 ) => string = (data, input, options) =>
   input.replace(
-    /{{ (\?)?(.+?)(?::"(.+)")? }}/g,
+    /{{ (\?)?(.+?)(?::"(.+)"(\?)?)? }}/g,
     (
       _,
       lazyString: string | undefined,
       path: string,
-      value: string | undefined
+      value: string | undefined,
+      lazyValueString: string | undefined
+      // eslint-disable-next-line max-params
     ) => {
       const exists = hasProperty(data, path)
       const lazy = lazyString === '?'
+      const lazyValue = lazyValueString === '?'
 
       if (!exists) {
         if (lazy) return value ?? ''
+        if (lazyValue) return ''
+
         throw new Error(`Path '${path}' does not exist on object!`)
       }
 

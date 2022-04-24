@@ -73,6 +73,18 @@ test('replace(): does exist, is not lazy, has value -> resolves to additional va
 
   t.is(resolved, 'value')
 })
+
+test('replace(): does not exist, is not lazy, has lazy value -> empty string', t => {
+  const resolved = replace({}, '{{ a.b:"value"? }}')
+  t.is(resolved, '')
+})
+
+test('replace(): does exist, is not lazy, has lazy value -> resolves to additional value', t => {
+  const data = { a: { b: 2 } }
+  const resolved = replace(data, '{{ a.b:"value"? }}')
+
+  t.is(resolved, 'value')
+})
 // #endregion
 
 // #region
@@ -84,6 +96,18 @@ test('replace(): does not exist, is lazy, has value -> resolves to additional va
 test('replace(): does exist, is lazy, has value -> resolves to value of path', t => {
   const data = { a: { b: 2 } }
   const resolved = replace(data, '{{ ?a.b:"value" }}')
+
+  t.is(resolved, '2')
+})
+
+test('replace(): does not exist, is lazy, has lazy value -> resolves to additional value', t => {
+  const resolved = replace({}, '{{ ?a.b:"value"? }}')
+  t.is(resolved, 'value')
+})
+
+test('replace(): does exist, is lazy, has lazy value -> resolves to value of path', t => {
+  const data = { a: { b: 2 } }
+  const resolved = replace(data, '{{ ?a.b:"value"? }}')
 
   t.is(resolved, '2')
 })
