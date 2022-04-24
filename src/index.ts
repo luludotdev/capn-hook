@@ -1,12 +1,16 @@
 import 'source-map-support/register.js'
 
+import { field } from '@lolpants/jogger'
 import mkdirp from 'mkdirp'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { argv, env } from 'node:process'
 import { exists } from './fs.js'
+import { ctxField, logger } from './logger.js'
 import { ConfigSchema, jsonSchema } from './schema.js'
 import { createServer } from './server.js'
+
+const ctx = ctxField('main')
 
 const main = async () => {
   const configDir = join('.', 'config')
@@ -28,11 +32,13 @@ const main = async () => {
 
   const data = await readFile(configPath, 'utf8')
   const json = JSON.parse(data) as unknown
-
   const config = await ConfigSchema.parseAsync(json)
-  const app = await createServer(config)
 
-  app.listen(env.PORT ?? 3000)
+  const app = await createServer(config)
+  const port = env.PORT ? Number.parseInt(env.PORT, 10) : 3000
+
+  logger.info(ctx, field('port', port))
+  app.listen()
 }
 
 main().catch(console.error)
