@@ -6,6 +6,7 @@ const EmbedFieldSchema = z.object({
   name: z.string().nonempty(),
   content: z.string().nonempty(),
   inline: z.boolean().default(false),
+  optional: z.boolean().default(false),
 })
 
 export type WebhookEmbed = z.infer<typeof WebhookEmbedSchema>

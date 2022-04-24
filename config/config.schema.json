@@ -116,6 +116,10 @@
                     "inline": {
                       "type": "boolean",
                       "default": false
+                    },
+                    "optional": {
+                      "type": "boolean",
+                      "default": false
                     }
                   },
                   "required": [

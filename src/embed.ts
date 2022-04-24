@@ -53,6 +53,10 @@ export const generateEmbed: <T extends Record<string, unknown>>(
     const name = replace(field.name)
     const content = replace(field.content)
 
+    if (content === '' && field.optional) {
+      continue
+    }
+
     const [first, ...split] = Util.splitMessage(content, { maxLength: 1950 })
     embed.addField(name, first, field.inline)
 
