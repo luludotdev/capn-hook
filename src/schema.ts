@@ -15,6 +15,7 @@ export const WebhookEmbedSchema = z.object({
   url: z.string().url().optional(),
   image: z.string().url().optional(),
   thumbnail: z.string().url().optional(),
+  timestamp: z.string().nonempty().optional(),
 
   author: z
     .object({

@@ -42,6 +42,13 @@ export const generateEmbed: <T extends Record<string, unknown>>(
     embed.setColor(color as HexColorString)
   }
 
+  if (hook.embed.timestamp) {
+    const timestamp = replace(hook.embed.timestamp)
+    const date = new Date(timestamp)
+
+    embed.setTimestamp(date)
+  }
+
   for (const field of hook.embed.fields ?? []) {
     const name = replace(field.name)
     const content = replace(field.content)

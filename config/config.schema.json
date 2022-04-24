@@ -43,6 +43,10 @@
                 "type": "string",
                 "format": "uri"
               },
+              "timestamp": {
+                "type": "string",
+                "minLength": 1
+              },
               "author": {
                 "type": "object",
                 "properties": {
