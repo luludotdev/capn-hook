@@ -1,6 +1,10 @@
+import { field as logField } from '@lolpants/jogger'
 import { type HexColorString, MessageEmbed, Util } from 'discord.js'
+import { ctxField, errorField, logger } from './logger.js'
 import { createReplace } from './replace.js'
 import { type Webhook } from './schema.js'
+
+const ctx = ctxField('embed')
 
 export const generateEmbed: <T extends Record<string, unknown>>(
   hook: Webhook,
@@ -58,11 +62,28 @@ export const generateEmbed: <T extends Record<string, unknown>>(
       continue
     }
 
-    const [first, ...split] = Util.splitMessage(content, { maxLength: 1000 })
-    embed.addField(name, first, field.inline)
+    try {
+      const [first, ...split] = Util.splitMessage(content, { maxLength: 1000 })
+      embed.addField(name, first, field.inline)
 
-    for (const cont of split) {
-      embed.addField(`${name} (cont.)`, cont, field.inline)
+      for (const cont of split) {
+        embed.addField(`${name} (cont.)`, cont, field.inline)
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        logger.error(
+          ctx,
+          logField(
+            'field',
+            logField('name', name),
+            logField('content', content)
+          ),
+          errorField(error)
+        )
+      }
+
+      // Re-throw
+      throw error
     }
   }
 
