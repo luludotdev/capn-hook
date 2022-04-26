@@ -50,6 +50,9 @@ export const replace: <T extends Record<string, unknown>>(
 
       let prop = resolveProp()
       if (options?.stripHtml === true) {
+        prop = prop.replace(/<br>/g, '\n')
+        prop = prop.replace(/<br \/>/g, '\n')
+
         prop = striptags(prop)
       }
 
