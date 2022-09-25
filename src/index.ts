@@ -1,10 +1,10 @@
 import 'source-map-support/register.js'
 
-import { field } from '@lolpants/jogger'
-import mkdirp from 'mkdirp'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { argv, env } from 'node:process'
+import { field } from '@lolpants/jogger'
+import mkdirp from 'mkdirp'
 import { exists } from './fs.js'
 import { ctxField, logger } from './logger.js'
 import { ConfigSchema, jsonSchema } from './schema.js'
@@ -35,7 +35,7 @@ const main = async () => {
   const config = await ConfigSchema.parseAsync(json)
 
   const app = await createServer(config)
-  const port = env.PORT ? Number.parseInt(env.PORT, 10) : 3000
+  const port = env.PORT ? Number.parseInt(env.PORT, 10) : 3_000
 
   logger.info(ctx, field('action', 'init'), field('port', port))
   app.listen(port)

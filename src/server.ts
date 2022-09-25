@@ -1,3 +1,5 @@
+/* eslint-disable require-atomic-updates */
+
 import Router from '@koa/router'
 import { field } from '@lolpants/jogger'
 import { WebhookClient } from 'discord.js'

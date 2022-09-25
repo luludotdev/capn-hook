@@ -10,7 +10,7 @@ const EmbedFieldSchema = z.object({
     .boolean()
     .default(false)
     .describe(
-      'If set to `true`, skips adding the field if the content resolves to an empty string'
+      'If set to `true`, skips adding the field if the content resolves to an empty string',
     ),
 
   stripHtml: z
@@ -55,7 +55,8 @@ export const WebhookEmbedSchema = z.object({
   color: z
     .string()
     .min(1)
-    .regex(/^#(?:[\da-fA-F]{3}){1,2}$/)
+    // eslint-disable-next-line unicorn/no-unsafe-regex
+    .regex(/^#(?:[\da-f]{3}){1,2}$/i)
     .optional()
     .describe('Hex Format'),
 

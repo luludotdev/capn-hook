@@ -1,3 +1,4 @@
+import { env } from 'node:process'
 import {
   createConsoleSink,
   createField,
@@ -6,7 +7,6 @@ import {
   field,
   type Field,
 } from '@lolpants/jogger'
-import { env } from 'node:process'
 
 const IS_PROD = env.NODE_ENV?.toLowerCase() === 'production'
 const IS_DEV = !IS_PROD

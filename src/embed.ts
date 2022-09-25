@@ -1,15 +1,15 @@
 import { field as logField } from '@lolpants/jogger'
+import { splitMessage } from '@lolpants/splitmessage'
 import { type HexColorString, EmbedBuilder } from 'discord.js'
 import { ctxField, errorField, logger } from './logger.js'
 import { createReplace } from './replace.js'
 import type { Webhook } from './schema.js'
-import { splitMessage } from '@lolpants/splitmessage'
 
 const ctx = ctxField('embed')
 
 export const generateEmbed: <T extends Record<string, unknown>>(
   hook: Webhook,
-  data: Readonly<T>
+  data: Readonly<T>,
 ) => EmbedBuilder = (hook, data) => {
   const replace = createReplace(data)
   const embed = new EmbedBuilder()
@@ -64,7 +64,7 @@ export const generateEmbed: <T extends Record<string, unknown>>(
     }
 
     try {
-      const [first, ...split] = splitMessage(content, { maxLength: 1000 })
+      const [first, ...split] = splitMessage(content, { maxLength: 1_000 })
       embed.addFields({ name, value: first, inline: field.inline })
 
       for (const cont of split) {
@@ -81,9 +81,9 @@ export const generateEmbed: <T extends Record<string, unknown>>(
           logField(
             'field',
             logField('name', name),
-            logField('content', content)
+            logField('content', content),
           ),
-          errorField(error)
+          errorField(error),
         )
       }
 

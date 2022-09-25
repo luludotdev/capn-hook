@@ -5,19 +5,23 @@ export interface ReplaceOptions {
   stripHtml: boolean
 }
 
+// prettier-ignore
+// eslint-disable-next-line unicorn/no-unsafe-regex
+const RX = /{{ (?<lazy>\?)?(?<path>.+?)(?::"(?<value>.+)"(?<lazyValue>\?)?)? }}/g
+
 export const replace: <T extends Record<string, unknown>>(
   data: Readonly<T>,
   input: string,
-  options?: Partial<ReplaceOptions>
+  options?: Partial<ReplaceOptions>,
 ) => string = (data, input, options) =>
   input.replace(
-    /{{ (\?)?(.+?)(?::"(.+)"(\?)?)? }}/g,
+    RX,
     (
       _,
       lazyString: string | undefined,
       path: string,
       value: string | undefined,
-      lazyValueString: string | undefined
+      lazyValueString: string | undefined,
       // eslint-disable-next-line max-params
     ) => {
       const exists = hasProperty(data, path)
@@ -50,18 +54,19 @@ export const replace: <T extends Record<string, unknown>>(
 
       let prop = resolveProp()
       if (options?.stripHtml === true) {
-        prop = prop.replace(/<br>/g, '\n')
-        prop = prop.replace(/<br \/>/g, '\n')
+        prop = prop.replaceAll('<br>', '\n')
+        prop = prop.replaceAll('<br />', '\n')
+        prop = prop.replaceAll('<br/>', '\n')
 
         prop = striptags(prop)
       }
 
       return prop
-    }
+    },
   )
 
 export const createReplace: <T extends Record<string, unknown>>(
-  data: Readonly<T>
+  data: Readonly<T>,
 ) => (input: string, options?: Partial<ReplaceOptions>) => string =
   data => (input, options) =>
     replace(data, input, options)
