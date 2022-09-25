@@ -4,15 +4,17 @@
   "type": "module",
   "main": "./build/index.js",
   "scripts": {
-    "test": "yarn run check && yarn run lint && yarn run ava",
-    "check": "yarn run compile --noEmit",
-    "lint": "xo",
-    "compile": "tsc",
+    "lint": "prettier --check . && eslint src --ext mjs,js,ts",
+    "format": "prettier --write . && eslint src --ext mjs,js,ts --fix",
+    "fmt": "yarn run format",
     "clean": "rimraf build",
-    "prebuild": "yarn run clean",
-    "build": "yarn run compile",
-    "dev": "yarn run build --watch",
-    "debug": "nodemon --inspect",
+    "compile": "tsc",
+    "check": "yarn run compile --noEmit",
+    "build": "yarn run clean && yarn run compile",
+    "vitest": "vitest run",
+    "test": "yarn run check && yarn run lint && yarn run vitest",
+    "dev": "yarn run clean && yarn run compile --watch",
+    "debug": "nodemon --watch build --inspect",
     "postinstall": "husky install",
     "schemagen": "yarn run build && node . schemagen"
   },
@@ -22,14 +24,14 @@
     "@types/koa__router": "^8.0.11",
     "@types/mkdirp": "^1.0.2",
     "@types/node": "^17.0.25",
-    "ava": "^4.2.0",
+    "eslint": "^8.24.0",
+    "eslint-config-neon": "^0.1.33",
     "husky": "^7.0.4",
     "nodemon": "^2.0.15",
+    "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "ts-node": "^10.7.0",
-    "tslib": "^2.4.0",
     "typescript": "^4.6.3",
-    "xo": "^0.48.0"
+    "vitest": "^0.23.4"
   },
   "dependencies": {
     "@koa/router": "^10.1.1",
@@ -44,16 +46,5 @@
     "striptags": "^3.2.0",
     "zod": "^3.14.4",
     "zod-to-json-schema": "^3.11.3"
-  },
-  "ava": {
-    "files": [
-      "test/**/*.test.ts"
-    ],
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--loader=ts-node/esm"
-    ]
   }
 }

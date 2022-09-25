@@ -1,115 +1,115 @@
-import test from 'ava'
+import { test, expect } from 'vitest'
 import { replace } from '../src/replace.js'
 
 // #region
-test('replace(): parses strings', t => {
+test('replace(): parses strings', () => {
   const data = { value: 'value' }
   const resolved = replace(data, '{{ value }}')
 
-  t.is(resolved, 'value')
+  expect(resolved).toBe('value')
 })
 
-test('replace(): parses numbers', t => {
+test('replace(): parses numbers', () => {
   const data = { value: 2 }
   const resolved = replace(data, '{{ value }}')
 
-  t.is(resolved, '2')
+  expect(resolved).toBe('2')
 })
 
-test('replace(): parses bigints', t => {
+test('replace(): parses bigints', () => {
   const data = { value: BigInt(Number.MAX_SAFE_INTEGER) + BigInt(10) }
   const resolved = replace(data, '{{ value }}')
 
-  t.is(resolved, '9007199254741001')
+  expect(resolved).toBe('9007199254741001')
 })
 
-test('replace(): throws for arrays', t => {
+test('replace(): throws for arrays', () => {
   const data = { value: [] }
-  t.throws(() => replace(data, '{{ value }}'))
+  expect(() => replace(data, '{{ value }}')).toThrow()
 })
 
-test('replace(): throws for objects', t => {
+test('replace(): throws for objects', () => {
   const data = { value: {} }
-  t.throws(() => replace(data, '{{ value }}'))
+  expect(() => replace(data, '{{ value }}')).toThrow()
 })
 // #endregion
 
 // #region
 // #region
-test('replace(): does not exist, is not lazy, no value -> throws', t => {
-  t.throws(() => replace({}, '{{ a.b }}'))
+test('replace(): does not exist, is not lazy, no value -> throws', () => {
+  expect(() => replace({}, '{{ a.b }}')).toThrow()
 })
 
-test('replace(): does exist, is not lazy, no value -> resolves to value of path', t => {
+test('replace(): does exist, is not lazy, no value -> resolves to value of path', () => {
   const data = { a: { b: 2 } }
   const resolved = replace(data, '{{ a.b }}')
 
-  t.is(resolved, '2')
+  expect(resolved).toBe('2')
 })
 // #endregion
 
 // #region
-test('replace(): does not exist, is lazy, no value -> empty string', t => {
+test('replace(): does not exist, is lazy, no value -> empty string', () => {
   const resolved = replace({}, '{{ ?a.b }}')
-  t.is(resolved, '')
+  expect(resolved).toBe('')
 })
 
-test('replace(): does exist, is lazy, no value -> resolves to value of path', t => {
+test('replace(): does exist, is lazy, no value -> resolves to value of path', () => {
   const data = { a: { b: 2 } }
   const resolved = replace(data, '{{ ?a.b }}')
 
-  t.is(resolved, '2')
+  expect(resolved).toBe('2')
 })
 // #endregion
 
 // #region
-test('replace(): does not exist, is not lazy, has value -> throws', t => {
-  t.throws(() => replace({}, '{{ a.b:"value" }}'))
+test('replace(): does not exist, is not lazy, has value -> throws', () => {
+  expect(() => replace({}, '{{ a.b:"value" }}')).toThrow()
 })
 
-test('replace(): does exist, is not lazy, has value -> resolves to additional value', t => {
+test('replace(): does exist, is not lazy, has value -> resolves to additional value', () => {
   const data = { a: { b: 2 } }
   const resolved = replace(data, '{{ a.b:"value" }}')
 
-  t.is(resolved, 'value')
+  expect(resolved).toBe('value')
 })
 
-test('replace(): does not exist, is not lazy, has lazy value -> empty string', t => {
+test('replace(): does not exist, is not lazy, has lazy value -> empty string', () => {
   const resolved = replace({}, '{{ a.b:"value"? }}')
-  t.is(resolved, '')
+  expect(resolved).toBe('')
 })
 
-test('replace(): does exist, is not lazy, has lazy value -> resolves to additional value', t => {
+test('replace(): does exist, is not lazy, has lazy value -> resolves to additional value', () => {
   const data = { a: { b: 2 } }
   const resolved = replace(data, '{{ a.b:"value"? }}')
 
-  t.is(resolved, 'value')
+  expect(resolved).toBe('value')
 })
 // #endregion
 
 // #region
-test('replace(): does not exist, is lazy, has value -> resolves to additional value', t => {
+test('replace(): does not exist, is lazy, has value -> resolves to additional value', () => {
   const resolved = replace({}, '{{ ?a.b:"value" }}')
-  t.is(resolved, 'value')
+  expect(resolved).toBe('value')
 })
 
-test('replace(): does exist, is lazy, has value -> resolves to value of path', t => {
+test('replace(): does exist, is lazy, has value -> resolves to value of path', () => {
   const data = { a: { b: 2 } }
   const resolved = replace(data, '{{ ?a.b:"value" }}')
 
-  t.is(resolved, '2')
+  expect(resolved).toBe('2')
 })
 
-test('replace(): does not exist, is lazy, has lazy value -> resolves to additional value', t => {
+test('replace(): does not exist, is lazy, has lazy value -> resolves to additional value', () => {
   const resolved = replace({}, '{{ ?a.b:"value"? }}')
-  t.is(resolved, 'value')
+  expect(resolved).toBe('value')
 })
 
-test('replace(): does exist, is lazy, has lazy value -> resolves to value of path', t => {
+test('replace(): does exist, is lazy, has lazy value -> resolves to value of path', () => {
   const data = { a: { b: 2 } }
   const resolved = replace(data, '{{ ?a.b:"value"? }}')
 
-  t.is(resolved, '2')
+  expect(resolved).toBe('2')
 })
 // #endregion
 // #endregion
