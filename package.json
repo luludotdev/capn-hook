@@ -1,6 +1,6 @@
 {
   "name": "capn-hook",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.2.3",
   "type": "module",
   "main": "./build/index.js",
   "scripts": {
