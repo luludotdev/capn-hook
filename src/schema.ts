@@ -79,7 +79,7 @@ export const WebhookSchema = z.object({
     .optional(),
 
   embed: WebhookEmbedSchema,
-  webhookURL: z.string().url(),
+  webhookURL: z.string().url().or(z.array(z.string().url()).nonempty()),
 })
 
 export type Config = z.infer<typeof ConfigSchema>

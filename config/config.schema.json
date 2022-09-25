@@ -158,8 +158,20 @@
             "additionalProperties": false
           },
           "webhookURL": {
-            "type": "string",
-            "format": "uri"
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "minItems": 1
+              }
+            ]
           }
         },
         "required": [

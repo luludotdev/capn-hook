@@ -20,8 +20,11 @@ export const createServer = async (config: Config) => {
   router.use(koaBody({ json: true, urlencoded: false, text: false }))
 
   for (const hook of config.hooks) {
-    const webhook = new WebhookClient({ url: hook.webhookURL })
+    const webhookURLs = Array.isArray(hook.webhookURL)
+      ? hook.webhookURL
+      : [hook.webhookURL]
 
+    const webhooks = webhookURLs.map(url => new WebhookClient({ url }))
     router.post(hook.id, `/${hook.id}`, async ctx => {
       const body = ctx.request.body as unknown
       if (
@@ -51,7 +54,9 @@ export const createServer = async (config: Config) => {
           hook.sender?.avatarURL && replace(data, hook.sender.avatarURL)
 
         const embed = generateEmbed(hook, data)
-        await webhook.send({ embeds: [embed], username, avatarURL })
+        for (const webhook of webhooks) {
+          await webhook.send({ embeds: [embed], username, avatarURL })
+        }
 
         ctx.status = 200
         ctx.body = 'OK'
