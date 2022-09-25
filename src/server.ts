@@ -7,7 +7,7 @@ import koaBody from 'koa-body'
 import { generateEmbed } from './embed.js'
 import { ctxField, errorField, logger } from './logger.js'
 import { replace } from './replace.js'
-import { type Config } from './schema.js'
+import type { Config } from './schema.js'
 
 const context = ctxField('server')
 

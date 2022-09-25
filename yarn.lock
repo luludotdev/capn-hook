@@ -398,6 +398,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lolpants/splitmessage@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@lolpants/splitmessage@npm:0.2.2"
+  checksum: 49e18b0979a6c1a529929d28e37aee875d27b3403b55de67db6227b281908e50caba725dacd28407817a8d38d86b26aec975e78f71fce443b9c9876c9de4d3bc
+  languageName: node
+  linkType: hard
+
 "@microsoft/tsdoc-config@npm:0.16.2":
   version: 0.16.2
   resolution: "@microsoft/tsdoc-config@npm:0.16.2"
@@ -1377,6 +1384,7 @@ __metadata:
   dependencies:
     "@koa/router": ^12.0.0
     "@lolpants/jogger": ^0.8.1
+    "@lolpants/splitmessage": ^0.2.2
     "@types/koa": ^2.13.5
     "@types/koa__router": ^12.0.0
     "@types/mkdirp": ^1.0.2

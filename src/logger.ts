@@ -11,7 +11,7 @@ import { env } from 'node:process'
 const IS_PROD = env.NODE_ENV?.toLowerCase() === 'production'
 const IS_DEV = !IS_PROD
 
-const consoleSink = createConsoleSink(IS_DEV)
+const consoleSink = createConsoleSink({ debug: IS_DEV })
 const fileSink = createFileSink({
   name: 'capn-hook',
   directory: 'logs',
@@ -24,16 +24,14 @@ export const logger = createLogger({
 })
 
 export const ctxField = createField('context')
-export const errorField: <T extends Error>(
-  error: T
-) => Readonly<Field> = error => {
-  const array: Array<Readonly<Field>> = [
+export const errorField: <T extends Error>(error: T) => Field = error => {
+  const fields: [Field, ...Field[]] = [
     field('type', error.name),
     field('message', error.message),
   ]
 
-  if (error.stack) array.push(field('stack', error.stack))
-  return field('error', array[0], ...array.slice(1))
+  if (error.stack) fields.push(field('stack', error.stack))
+  return field('error', ...fields)
 }
 
 export const flush = async () => fileSink.flush()

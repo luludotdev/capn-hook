@@ -3,8 +3,8 @@ import { zodToJsonSchema } from 'zod-to-json-schema'
 
 export type EmbedField = z.infer<typeof EmbedFieldSchema>
 const EmbedFieldSchema = z.object({
-  name: z.string().nonempty(),
-  content: z.string().nonempty(),
+  name: z.string().min(1),
+  content: z.string().min(1),
   inline: z.boolean().default(false),
   optional: z
     .boolean()
@@ -21,10 +21,10 @@ const EmbedFieldSchema = z.object({
 
 export type WebhookEmbed = z.infer<typeof WebhookEmbedSchema>
 export const WebhookEmbedSchema = z.object({
-  title: z.string().nonempty(),
+  title: z.string().min(1),
   description: z
     .object({
-      content: z.string().nonempty(),
+      content: z.string().min(1),
       stripHtml: z
         .boolean()
         .default(false)
@@ -35,11 +35,11 @@ export const WebhookEmbedSchema = z.object({
   url: z.string().url().optional(),
   image: z.string().url().optional(),
   thumbnail: z.string().url().optional(),
-  timestamp: z.string().nonempty().optional(),
+  timestamp: z.string().min(1).optional(),
 
   author: z
     .object({
-      name: z.string().nonempty(),
+      name: z.string().min(1),
       url: z.string().url().optional(),
       iconURL: z.string().url().optional(),
     })
@@ -47,14 +47,14 @@ export const WebhookEmbedSchema = z.object({
 
   footer: z
     .object({
-      text: z.string().nonempty(),
+      text: z.string().min(1),
       iconURL: z.string().url().optional(),
     })
     .optional(),
 
   color: z
     .string()
-    .nonempty()
+    .min(1)
     .regex(/^#(?:[\da-fA-F]{3}){1,2}$/)
     .optional()
     .describe('Hex Format'),
@@ -66,13 +66,13 @@ export type Webhook = z.infer<typeof WebhookSchema>
 export const WebhookSchema = z.object({
   id: z
     .string()
-    .nonempty()
+    .min(1)
     .regex(/[a-z-]+/)
     .describe('Used as the webhook path'),
 
   sender: z
     .object({
-      username: z.string().nonempty().optional(),
+      username: z.string().min(1).optional(),
       avatarURL: z.string().url().optional(),
     })
     .optional(),
@@ -83,7 +83,7 @@ export const WebhookSchema = z.object({
 
 export type Config = z.infer<typeof ConfigSchema>
 export const ConfigSchema = z.object({
-  $schema: z.string().nonempty().optional(),
+  $schema: z.string().min(1).optional(),
   hooks: z.array(WebhookSchema),
 })
 

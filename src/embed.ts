@@ -1,17 +1,18 @@
 import { field as logField } from '@lolpants/jogger'
-import { type HexColorString, MessageEmbed, Util } from 'discord.js'
+import { type HexColorString, EmbedBuilder } from 'discord.js'
 import { ctxField, errorField, logger } from './logger.js'
 import { createReplace } from './replace.js'
-import { type Webhook } from './schema.js'
+import type { Webhook } from './schema.js'
+import { splitMessage } from '@lolpants/splitmessage'
 
 const ctx = ctxField('embed')
 
 export const generateEmbed: <T extends Record<string, unknown>>(
   hook: Webhook,
   data: Readonly<T>
-) => MessageEmbed = (hook, data) => {
+) => EmbedBuilder = (hook, data) => {
   const replace = createReplace(data)
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
 
   embed.setTitle(replace(hook.embed.title))
   if (hook.embed.description) {
@@ -63,11 +64,15 @@ export const generateEmbed: <T extends Record<string, unknown>>(
     }
 
     try {
-      const [first, ...split] = Util.splitMessage(content, { maxLength: 1000 })
-      embed.addField(name, first, field.inline)
+      const [first, ...split] = splitMessage(content, { maxLength: 1000 })
+      embed.addFields({ name, value: first, inline: field.inline })
 
       for (const cont of split) {
-        embed.addField(`${name} (cont.)`, cont, field.inline)
+        embed.addFields({
+          name: `${name} (cont.)`,
+          value: cont,
+          inline: field.inline,
+        })
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
