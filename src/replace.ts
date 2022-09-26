@@ -22,7 +22,6 @@ export const replace: <T extends Record<string, unknown>>(
       path: string,
       value: string | undefined,
       lazyValueString: string | undefined,
-      // eslint-disable-next-line max-params
     ) => {
       const exists = hasProperty(data, path)
       const lazy = lazyString === '?'

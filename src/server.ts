@@ -1,5 +1,3 @@
-/* eslint-disable require-atomic-updates */
-
 import Router from '@koa/router'
 import { field } from '@lolpants/jogger'
 import { WebhookClient } from 'discord.js'
@@ -55,6 +53,7 @@ export const createServer = async (config: Config) => {
 
         const embed = generateEmbed(hook, data)
         for (const webhook of webhooks) {
+          // eslint-disable-next-line no-await-in-loop
           await webhook.send({ embeds: [embed], username, avatarURL })
         }
 
