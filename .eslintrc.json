@@ -1,24 +1,15 @@
 {
   "root": true,
-  "extends": ["neon/common", "neon/node", "neon/typescript", "neon/prettier"],
+  "extends": [
+    "neon/common",
+    "neon/node",
+    "neon/typescript",
+    "neon/prettier",
+    "@lolpants/eslint-config/base",
+    "@lolpants/eslint-config/typescript"
+  ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
   },
-  "rules": {
-    "typescript-sort-keys/interface": "off",
-    "@typescript-eslint/lines-between-class-members": "off",
-    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-
-    "no-warning-comments": [
-      1,
-      {
-        "location": "start",
-        "terms": ["TODO", "@toto"]
-      }
-    ]
-  },
-  "ignorePatterns": ["**/build/*"],
-  "env": {
-    "jest": true
-  }
+  "ignorePatterns": ["**/build/*"]
 }

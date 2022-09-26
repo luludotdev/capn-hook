@@ -19,6 +19,7 @@
     "schemagen": "yarn run build && node . schemagen"
   },
   "devDependencies": {
+    "@lolpants/eslint-config": "^0.1.1",
     "@types/koa": "^2.13.5",
     "@types/koa__router": "^12.0.0",
     "@types/mkdirp": "^1.0.2",
